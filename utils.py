@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import networkx as nx
+from operator import itemgetter
 
 
 flatten = lambda l: [item for sublist in l for item in sublist]
@@ -87,6 +88,22 @@ def add_undir_edge(graph, u, v):
     graph[u].append(v)
     graph[v].append(u)
     return graph
+
+
+def add_weighted_undir_edge(graph, u, v, w):
+    graph[u][v] = w
+    graph[v][u] = w
+    return graph
+
+
+def strip_weights(graph):
+    out = {k: v.keys() for k, v in graph.items()}
+    return out
+
+
+def get_sorted_edges(graph, reverse=False):
+    edges = [(n1, n2, w) for n1, ns in graph.items() for n2, w in ns.items()]
+    return sorted(edges, key=itemgetter(2), reverse=reverse)
 
 
 def show_graph(graph):

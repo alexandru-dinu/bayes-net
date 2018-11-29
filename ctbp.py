@@ -1,9 +1,12 @@
 from utils import *
+from kruskal import kruskal
 
 from copy import copy
+from collections import defaultdict
 from itertools import combinations
 from operator import itemgetter
 from pprint import pprint
+
 
 class BayesNet:
     def __init__(self, filename):
@@ -97,12 +100,77 @@ def triangulate(graph):
     return graph
 
 
-def chain(graph, fs):
+def BronKerbosch(graph, r, p, x, out):
+    """
+    finds the maximal cliques that include
+    all of the vertices in R, some of the vertices in P, and none of the vertices in X
+    """
+    if len(p) == 0 and len(x) == 0:
+        name = "".join(r)
+        out[name] = r
+    else:
+        while p:
+            v = p[0]
+
+            BronKerbosch(graph,
+                r=list(set(r + [v])),
+                p=list(set(p).intersection(graph[v])),
+                x=list(set(x).intersection(graph[v])),
+                out=out
+            )
+
+            p.remove(v)
+            x += [v]
+
+
+def construct_weighted_clique_graph(graph):
+    cliques = {}
+
+    # find maximal cliques
+    BronKerbosch(graph, r=[], p=list(graph.keys()), x=[], out=cliques)
+
+    print(">>> [cliques]")
+    pprint(cliques)
+
+    clique_tree = {x: {} for x in cliques.keys()}
+    pairs = combinations(cliques.keys(), 2)
+
+    # add weighted edges between cliques
+    for n1, n2 in pairs:
+        c1, c2 = cliques[n1], cliques[n2]
+
+        common = list(set(c1).intersection(set(c2)))
+        size = len(common)
+
+        if size == 0:
+            continue
+
+        add_weighted_undir_edge(clique_tree, n1, n2, size)
+
+    # print(">>> [clique tree]")
+    # show_graph(strip_weights(clique_tree))
+
+    return clique_tree
+
+
+def compute_max_spanning_tree(graph):
+    mst = kruskal(graph)
+    show_graph(mst)
+    return mst
+
+
+def chain(graph, *fs):
     for f in fs:
         graph = f(graph)
     return graph
 
+
 if __name__ == "__main__":
     bnet = BayesNet('bnet')
 
-    out = triangulate(moralize(bnet.graph))
+    out = chain(bnet.graph,
+        moralize,
+        triangulate,
+        construct_weighted_clique_graph,
+        compute_max_spanning_tree
+    )
