@@ -12,6 +12,7 @@ class BayesNet:
         self.queries = []
         self.probabilities = {}
         self.samples = None
+        self.__ordered_nodes = None
 
         lines = [l.strip() for l in open(filename).readlines()]
 
@@ -43,7 +44,8 @@ class BayesNet:
     def read_samples(self, filename):
         lines = [l.strip() for l in open(filename).readlines()]
 
-        self.samples = {v: [] for v in lines[0].split(" ")}
+        self.__ordered_nodes = lines[0].split(" ")
+        self.samples = {v: [] for v in self.__ordered_nodes}
 
         for s in lines[1:]:
             vs = list(map(int, s.split(" ")))
@@ -52,7 +54,7 @@ class BayesNet:
 
 
     def get_nth_sample(self, n):
-        return [self.samples[x][n] for x in self.samples]
+        return [self.samples[x][n] for x in self.__ordered_nodes]
 
 
     def get_prob(self, node, given=None):
@@ -70,5 +72,3 @@ class BayesNet:
 if __name__ == "__main__":
     bnet = BayesNet("./input/pe_bnet")
     bnet.read_samples("./input/pe_samples")
-
-    print(bnet.get_nth_sample(1234))
