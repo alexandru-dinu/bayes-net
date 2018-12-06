@@ -1,0 +1,16 @@
+init:
+for each clique c in the tree
+    compute the factor of c given vars of c (product of factors with prob taken from table)
+
+apply belief propagation, for a given query
+choose a node in the tree as the root R, now graph becomes directed
+do upward pass
+    from each kid to root
+do downward pass
+    from root to each kid
+------------
+
+TODO:
+- construct factors from prob distr
+- compute the factor for each clique in clique tree
+- apply belief propagation

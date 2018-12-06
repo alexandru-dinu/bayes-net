@@ -17,10 +17,10 @@ class BayesNet:
         lines = [l.strip() for l in open(filename).readlines()]
 
         for line in lines:
-            n, given, probs = [a.strip().split(" ") for a in line.split(";")]
-            self.graph[n[0]] = [] if given == [''] else given
+            n, parents, probs = [a.strip().split(" ") for a in line.split(";")]
+            parents = [] if parents == [''] else parents
+            self.graph[n[0]] = parents
             self.probabilities[n[0]] = list(map(float, probs))
-
 
     def get_prob(self, node, given=None):
         """
@@ -155,18 +155,37 @@ def construct_weighted_clique_graph(graph):
 
 def compute_max_spanning_tree(graph):
     mst = kruskal(graph)
-    show_graph(mst)
+
+    print(">>> [mst]")
+    pprint(dict(mst))
+    # show_graph(mst)
+
     return mst
 
 
+def set_initial_factors(probs, clique_tree):
+
+    for clique in clique_tree.keys():
+        clique_nodes = list(map(lambda x : x, clique))
+
+
+
+def belief_propagation(graph, query):
+    pass
+
+
 def chain(graph, *fs):
+    g = copy(graph)
     for f in fs:
-        graph = f(graph)
-    return graph
+        g = f(g)
+    return g
 
 
 if __name__ == "__main__":
     bnet = BayesNet('bnet')
+
+    print(">>> [bayes-net]")
+    pprint(bnet.graph)
 
     out = chain(bnet.graph,
         moralize,
@@ -174,3 +193,5 @@ if __name__ == "__main__":
         construct_weighted_clique_graph,
         compute_max_spanning_tree
     )
+
+    set_initial_factors(bnet.probabilities, out)
