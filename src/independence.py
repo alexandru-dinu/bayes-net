@@ -1,7 +1,8 @@
 import pprint
 import re
-from collections import namedtuple
+import sys
 
+from collections import namedtuple
 from termcolor import colored
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -54,7 +55,7 @@ def solve(g, query):
 
 
 if __name__ == "__main__":
-    problem = Problem('./input/ind_queries')
+    problem = Problem(sys.argv[1])
 
     for query in problem.queries:
         solve(problem.graph, query)

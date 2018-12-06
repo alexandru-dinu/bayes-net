@@ -6,6 +6,7 @@ from collections import defaultdict
 from itertools import combinations
 from operator import itemgetter
 from pprint import pprint
+import sys
 
 
 class BayesNet:
@@ -181,7 +182,7 @@ def chain(graph, *fs):
 
 
 if __name__ == "__main__":
-    bnet = BayesNet('./input/ctbp_bnet')
+    bnet = BayesNet(sys.argv[1])
 
     print(">>> [bayes-net]")
     pprint(bnet.graph)

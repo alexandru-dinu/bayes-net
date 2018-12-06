@@ -1,11 +1,11 @@
-from utils import *
-
+import sys
 import numpy as np
 from collections import namedtuple, defaultdict
 from itertools import product
 from termcolor import colored
 from pprint import pprint
 
+from utils import *
 
 Query = namedtuple('Query', ['xs', 'given'])
 
@@ -151,8 +151,8 @@ def estimate_params(bnet, samples):
 
 
 if __name__ == "__main__":
-    bnet = BayesNet("./input/pe_bnet")
-    samples = Samples("./input/pe_samples")
+    bnet = BayesNet(sys.argv[1])
+    samples = Samples(sys.argv[2])
 
     params = estimate_params(bnet, samples)
 
