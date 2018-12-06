@@ -11,7 +11,6 @@ from pprint import pprint
 class BayesNet:
     def __init__(self, filename):
         self.graph = {}
-        self.queries = []
         self.probabilities = {}
 
         lines = [l.strip() for l in open(filename).readlines()]
@@ -182,7 +181,7 @@ def chain(graph, *fs):
 
 
 if __name__ == "__main__":
-    bnet = BayesNet('bnet')
+    bnet = BayesNet('./input/ctbp_bnet')
 
     print(">>> [bayes-net]")
     pprint(bnet.graph)

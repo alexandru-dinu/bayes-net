@@ -54,7 +54,7 @@ def solve(g, query):
 
 
 if __name__ == "__main__":
-    problem = Problem('queries.txt')
+    problem = Problem('./input/ind_queries')
 
     for query in problem.queries:
         solve(problem.graph, query)
