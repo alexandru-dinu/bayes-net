@@ -4,6 +4,7 @@ from collections import namedtuple, defaultdict
 from itertools import product
 from termcolor import colored
 from pprint import pprint
+from functools import reduce
 
 from utils import *
 
@@ -37,19 +38,13 @@ class Samples:
         vs = [(var, value)]
         """
 
-        common = set()
+        head, *tail = vs
 
-        x = vs[0]
-        for i, v in enumerate(range(self.num_samples)):
-            if self.samples[x[0]][i] == x[1]:
-                common.add(i)
-
-        for var, value in vs[1:]:
-            a = set()
-            for i in common:
-                if self.samples[var][i] == value:
-                    a.add(i)
-            common &= a
+        common = reduce(
+            lambda acc, e: np.intersect1d(acc, np.where(self.samples[e[0]] == e[1])),
+            tail,
+            np.where(self.samples[head[0]] == head[1])[0]
+        )
 
         return len(common)
 
