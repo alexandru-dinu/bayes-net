@@ -14,3 +14,34 @@ TODO:
 - construct factors from prob distr
 - compute the factor for each clique in clique tree
 - apply belief propagation
+
+
+# vs = dict(vs)
+
+# n = len(self.ordered_nodes)
+
+# _d = {x: 0 for x in self.ordered_nodes}
+# _d.update(vs)
+
+# _vars = dict(zip(self.ordered_nodes, range(len(self.ordered_nodes)-1, -1, -1)))
+
+# M = 2 ** n
+
+# p1 = 0
+# for i, v in enumerate(self.ordered_nodes):
+#     p1 |= (_d[v] << (n - 1 - i))
+
+# _d = {x: 0 for x in self.ordered_nodes}
+# for v in vs:
+#     _d[v] = 1
+
+# p2 = 0
+# for i, v in enumerate(self.ordered_nodes):
+#     p2 |= (_d[v] << (n - 1 - i))
+
+# total = 0
+# for i in range(self.num_samples):
+#     s = self.get_nth_sample(i)
+#     s = s.dot(1 << np.arange(s.size)[::-1])
+#     total += (((M + ~(s ^ p1)) & p2) >= p2)
+# return total

@@ -1,9 +1,14 @@
-import matplotlib.pyplot as plt
-import networkx as nx
 from operator import itemgetter
 
+import matplotlib.pyplot as plt
+import networkx as nx
+import numpy as np
 
 flatten = lambda l: [item for sublist in l for item in sublist]
+
+
+def sigmoid(x):
+    return 1.0 / (1.0 + np.exp(-x))
 
 
 def get_paths_util(graph, u, dest, visited, path, paths):
@@ -46,7 +51,7 @@ def is_closed(g, path, zs):
     closed = []
 
     for i in range(len(path) - 2):
-        x1, x2, x3 = path[i], path[i+1], path[i+2]
+        x1, x2, x3 = path[i], path[i + 1], path[i + 2]
 
         # causal trail
         if is_edge(tr, x1, x2) and is_edge(tr, x2, x3):
@@ -109,7 +114,8 @@ def get_sorted_edges(graph, reverse=False):
 def show_graph(graph):
     G = nx.DiGraph()
     G.add_edges_from(get_edges(graph))
-    pos = nx.kamada_kawai_layout(G)
+    # pos = nx.kamada_kawai_layout(G)
+    pos = nx.spectral_layout(G)
     nx.draw_networkx_labels(G, pos)
     nx.draw_networkx_nodes(G, pos)
     nx.draw_networkx_edges(G, pos, edgelist=G.edges, edge_color='k')
