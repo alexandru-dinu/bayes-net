@@ -106,7 +106,7 @@ class BayesNet:
             return self.probabilities[node][int(given, 2)]
 
 
-class Theta:
+class Param:
     def __init__(self, X, Y, val=0):
         self.X = X
         self.Y = Y
@@ -135,56 +135,56 @@ def estimate_params(bnet, samples):
 
 # Learn parameters
 
-def construct_thetas(bnet):
-    thetas = []
+def construct_params(bnet):
+    params = []
 
     for x, parents in bnet.graph.items():
         if not parents:
-            thetas.append(Theta(X=x, Y={}))
+            params.append(Param(X=x, Y={}))
         else:
             for prod in product(*[[0, 1]] * len(parents)):
                 xs = dict(zip(parents, prod))
-                thetas.append(Theta(X=x, Y=xs))
+                params.append(Param(X=x, Y=xs))
 
-    return thetas
-
-
-def init_thetas(thetas):
-    for theta in thetas:
-        theta.val = np.random.uniform()
-    return thetas
+    return params
 
 
-def learn_thetas(bnet, samples, num_iter=10, lr=0.001):
-    thetas = construct_thetas(bnet)
-    thetas = init_thetas(thetas)
+def init_params(params):
+    for param in params:
+        param.val = np.random.uniform()
+    return params
+
+
+def learn_params(bnet, samples, num_iter=10, lr=0.001):
+    params = construct_params(bnet)
+    params = init_params(params)
 
     # learning loop
     for it in range(num_iter):
-        for theta in thetas:
+        for param in params:
 
             # no "givens"
-            if theta.Y == {}:
+            if param.Y == {}:
                 subset = np.arange(samples.num_samples)
             # get samples subset for parent values
             else:
-                subset = samples.get_indices_of(list(theta.Y.items()))
+                subset = samples.get_indices_of(list(param.Y.items()))
 
             # perform update
             for i in subset:
-                theta.val += lr * (samples.samples[theta.X][i] - sigmoid(theta.val))
+                param.val += lr * (samples.samples[param.X][i] - sigmoid(param.val))
 
         print(f"[+] Iter {it+1}/{num_iter}")
 
-    return thetas
+    return params
 
 
 def main(args):
-    bnet = BayesNet(args[0])
-    samples = Samples(args[1])
+    bnet = BayesNet(filename=args[0])
+    samples = Samples(filename=args[1])
 
     # params = estimate_params(bnet, samples)
-    params = learn_thetas(bnet, samples, num_iter=20, lr=1e-3)
+    params = learn_params(bnet, samples, num_iter=20, lr=1e-3)
 
     for p in params:
         print(p)

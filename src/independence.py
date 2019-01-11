@@ -55,7 +55,7 @@ def solve(g, query):
 
 
 if __name__ == "__main__":
-    problem = Problem(sys.argv[1])
+    problem = Problem(filename=sys.argv[1])
 
     for query in problem.queries:
         solve(problem.graph, query)

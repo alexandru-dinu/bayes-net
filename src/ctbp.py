@@ -164,13 +164,14 @@ def compute_max_spanning_tree(graph):
 
 
 def set_initial_factors(probs, clique_tree):
-
+    # TODO
     for clique in clique_tree.keys():
         clique_nodes = list(map(lambda x : x, clique))
 
 
 
 def belief_propagation(graph, query):
+    # TODO
     pass
 
 
@@ -182,7 +183,7 @@ def chain(graph, *fs):
 
 
 if __name__ == "__main__":
-    bnet = BayesNet(sys.argv[1])
+    bnet = BayesNet(filename=sys.argv[1])
 
     print(">>> [bayes-net]")
     pprint(bnet.graph)
