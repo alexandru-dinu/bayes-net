@@ -48,10 +48,9 @@ def solve(g, query):
     for path in all_paths:
         r = is_closed(g, path, query.Z)
         res.append(r)
-        print("\t", path, " : closed = ", r)
+        print(f"\t{'-'.join(path)}: closed = {r}")
 
-    color = 'green' if all(res) else 'red'
-    print(colored(f"answer: {all(res)}", color))
+    print(colored(f"Independent: {all(res)}", color='green' if all(res) else 'red'))
 
 
 if __name__ == "__main__":

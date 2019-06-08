@@ -44,14 +44,14 @@ def is_edge(graph, u, v, no_dir=False):
 
 def is_closed(g, path, zs):
     """
-    Check if path is closed w.r.t. z in zs
+    Check if path is closed w.r.t. z in zs (set of observed vars)
     """
     tr = get_transposed_graph(g)
 
     closed = []
 
     for i in range(len(path) - 2):
-        x1, x2, x3 = path[i], path[i + 1], path[i + 2]
+        x1, x2, x3 = path[i:i+3]
 
         # causal trail
         if is_edge(tr, x1, x2) and is_edge(tr, x2, x3):
@@ -75,7 +75,7 @@ def is_closed(g, path, zs):
             else:
                 closed.append(True)
 
-    return False if len(closed) == 0 else any(closed)
+    return any(closed)
 
 
 def get_edges(graph):
