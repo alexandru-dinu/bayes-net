@@ -69,5 +69,4 @@ def sum_out(var, phi):
 
             res_sum[tuple(ls)] = p1 + p2
 
-
     return Factor(vars=res_vars, values=res_sum)

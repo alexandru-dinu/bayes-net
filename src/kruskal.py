@@ -3,7 +3,8 @@ from utils import get_sorted_edges, add_weighted_undir_edge
 
 
 parents = {}
-ranks   = {}
+ranks = {}
+
 
 class DisjointSets:
     def __init__(self):

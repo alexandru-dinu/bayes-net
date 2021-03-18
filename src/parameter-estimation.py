@@ -5,7 +5,7 @@ from itertools import product
 
 from utils import *
 
-Query = namedtuple('Query', ['xs', 'given'])
+Query = namedtuple("Query", ["xs", "given"])
 
 
 class Samples:
@@ -55,7 +55,7 @@ class Samples:
         common = reduce(
             lambda acc, e: np.intersect1d(acc, np.where(self.samples[e[0]] == e[1])),
             tail,
-            np.where(self.samples[head[0]] == head[1])[0]
+            np.where(self.samples[head[0]] == head[1])[0],
         )
 
         return len(common)
@@ -77,7 +77,7 @@ class BayesNet:
         for i in range(net_size):
             line = lines[1 + i]
             n, parents, probs = [a.strip().split(" ") for a in line.split(";")]
-            parents = [] if parents == [''] else parents
+            parents = [] if parents == [""] else parents
             self.graph[n[0]] = parents
             self.probabilities[n[0]] = list(map(float, probs))
 
@@ -90,7 +90,7 @@ class BayesNet:
             xs = dict(zip(xs.keys(), map(int, xs.values())))
 
             gs = [q.strip() for q in gs.split(" ")]
-            gs = [] if gs == [''] else gs
+            gs = [] if gs == [""] else gs
             gs = dict(map(lambda x: x.split("="), gs))
             gs = dict(zip(gs.keys(), map(int, gs.values())))
 
@@ -118,6 +118,7 @@ class Param:
 
 # Frequentist approach
 
+
 def estimate_params(bnet, samples):
     params = defaultdict(lambda: [])
 
@@ -134,6 +135,7 @@ def estimate_params(bnet, samples):
 
 
 # Learn parameters
+
 
 def construct_params(bnet):
     params = []

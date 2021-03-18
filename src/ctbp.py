@@ -18,7 +18,7 @@ class BayesNet:
 
         for line in lines:
             n, parents, probs = [a.strip().split(" ") for a in line.split(";")]
-            parents = [] if parents == [''] else parents
+            parents = [] if parents == [""] else parents
             self.graph[n[0]] = parents
             self.probabilities[n[0]] = list(map(float, probs))
 
@@ -31,6 +31,8 @@ class BayesNet:
         else:
             assert len(given) == len(self.graph[node])
             return self.probabilities[node][int(given, 2)]
+
+
 # -- problem
 
 
@@ -50,7 +52,8 @@ def get_f_set(graph, node):
     vs = get_vertices(graph)
 
     f_set = [
-        (u1, u2) for (u1, u2) in combinations(vs, 2)
+        (u1, u2)
+        for (u1, u2) in combinations(vs, 2)
         if is_edge(graph, u1, node) and is_edge(graph, u2, node)
     ]
 
@@ -90,7 +93,6 @@ def triangulate(graph):
 
         out = get_induced(out, v_min)
 
-
     to_be_added = flatten([list(es) for es in added_by.values()])
 
     for (u, v) in to_be_added:
@@ -112,11 +114,12 @@ def BronKerbosch(graph, r, p, x, out):
         while p:
             v = p[0]
 
-            BronKerbosch(graph,
+            BronKerbosch(
+                graph,
                 r=list(set(r + [v])),
                 p=list(set(p).intersection(graph[v])),
                 x=list(set(x).intersection(graph[v])),
-                out=out
+                out=out,
             )
 
             p.remove(v)
@@ -166,8 +169,7 @@ def compute_max_spanning_tree(graph):
 def set_initial_factors(probs, clique_tree):
     # TODO
     for clique in clique_tree.keys():
-        clique_nodes = list(map(lambda x : x, clique))
-
+        clique_nodes = list(map(lambda x: x, clique))
 
 
 def belief_propagation(graph, query):
@@ -188,11 +190,12 @@ if __name__ == "__main__":
     print(">>> [bayes-net]")
     pprint(bnet.graph)
 
-    out = chain(bnet.graph,
+    out = chain(
+        bnet.graph,
         moralize,
         triangulate,
         construct_weighted_clique_graph,
-        compute_max_spanning_tree
+        compute_max_spanning_tree,
     )
 
     set_initial_factors(bnet.probabilities, out)

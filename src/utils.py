@@ -51,7 +51,7 @@ def is_closed(g, path, zs):
     closed = []
 
     for i in range(len(path) - 2):
-        x1, x2, x3 = path[i:i+3]
+        x1, x2, x3 = path[i : i + 3]
 
         # causal trail
         if is_edge(tr, x1, x2) and is_edge(tr, x2, x3):
@@ -118,7 +118,7 @@ def show_graph(graph):
     pos = nx.spectral_layout(G)
     nx.draw_networkx_labels(G, pos)
     nx.draw_networkx_nodes(G, pos)
-    nx.draw_networkx_edges(G, pos, edgelist=G.edges, edge_color='k')
+    nx.draw_networkx_edges(G, pos, edgelist=G.edges, edge_color="k")
     plt.show()
 
 
